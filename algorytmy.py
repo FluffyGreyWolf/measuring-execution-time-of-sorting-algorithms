@@ -3,8 +3,10 @@ from datetime import datetime
 import csv
 from csv import writer
 
+# pozwala na zmierzenie czasu wykonania całego programu
 startTimeFull = datetime.now()
 
+# towrzymy plik csv z nazwami tabel
 with open("wynik.csv", 'w') as csvfile:
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(['Algorytm', 'Ilość elementów', 'Typ elementów', 'Czas wykonania'])
@@ -12,7 +14,6 @@ with open("wynik.csv", 'w') as csvfile:
 # zakresy liczb
 zakresy = [2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 20000]
 
-# puste listy wygenerowane liczby w ilości od 2000 do 20000 liczb w liście
 
 # listy na losowo generowane liczby
 random2000 = []
@@ -94,6 +95,81 @@ vlisty = [v2000, v4000, v6000, v8000, v10000, v12000, v14000, v16000, v18000, v2
 alisty = [a2000, a4000, a6000, a8000, a10000, a12000, a14000, a16000, a18000, a20000]
 constlisty = [const2000, const4000, const6000, const8000, const10000, const12000, const14000, const16000, const18000, const20000]
 
+# funkcja czyszcząca listy i generująca nowe dane
+def clear():
+    random2000.clear()
+    random4000.clear()
+    random6000.clear()
+    random8000.clear()
+    random10000.clear()
+    random12000.clear()
+    random14000.clear()
+    random16000.clear()
+    random18000.clear()
+    random20000.clear()
+
+    ascending2000.clear()
+    ascending4000.clear()
+    ascending6000.clear()
+    ascending8000.clear()
+    ascending10000.clear()
+    ascending12000.clear()
+    ascending14000.clear()
+    ascending16000.clear()
+    ascending18000.clear()
+    ascending20000.clear()
+
+    descending2000.clear()
+    descending4000.clear()
+    descending6000.clear()
+    descending8000.clear()
+    descending10000.clear()
+    descending12000.clear()
+    descending14000.clear()
+    descending16000.clear()
+    descending18000.clear()
+    descending20000.clear()
+
+    v2000.clear()
+    v4000.clear()
+    v6000.clear()
+    v8000.clear()
+    v10000.clear()
+    v12000.clear()
+    v14000.clear()
+    v16000.clear()
+    v18000.clear()
+    v20000.clear()
+
+    a2000.clear()
+    a4000.clear()
+    a6000.clear()
+    a8000.clear()
+    a10000.clear()
+    a12000.clear()
+    a14000.clear()
+    a16000.clear()
+    a18000.clear()
+    a20000.clear()
+
+    const2000.clear()
+    const4000.clear()
+    const6000.clear()
+    const8000.clear()
+    const10000.clear()
+    const12000.clear()
+    const14000.clear()
+    const16000.clear()
+    const18000.clear()
+    const20000.clear()
+
+    generaterandom()
+    generateascending()
+    generatedescending()
+    generatev()
+    generatea()
+    generateconst()
+
 # generowanie losowych liczb
 def generaterandom():
     for a in randomlisty:
@@ -146,536 +222,219 @@ def generatea():
 
 generatea()
 
-# generowanie stałych liczb ( zawsze będą to te same losowe liczby )
-seed = 1
+# generowanie stałych liczb ( lista o długości x składająca się x z powtórzeń jednej liczby )
 def generateconst():
     for a in constlisty:
         for i in range(0, zakresy[constlisty.index(a)]):
-            random.seed(seed + i)
-            x = random.randint(0, 20000)
+            x = random.randint(1, 1)
             a.append(x)
 
 generateconst()
 
+# funkcja do mierzenia czasu wykonania algorytmu oraz zapisania wyniku do pliku csv
+def saveExecutionTime(algorytm, sortowanie, printPosortowanie, startTime):
+    time =  datetime.now() - startTime
+    with open('wynik.csv', 'a', newline='') as f_object:
+        writer_object = writer(f_object)
+        writer_object.writerow([algorytm, len(a), sortowanie, time])
+        f_object.close()
+    print(printPosortowanie, len(a) , time)
 
+
+
+
+# SELECTION SORT
+def selection(algorytm, sortowanie, printPosortowanie):
+    startTime = datetime.now()
+    for i in range(len(a)):
+        min = i
+        for n in range(i+1, len(a)):
+            if a[min] > a[n]:
+                min = n
+        a[i], a[min] = a[min], a[i]
+
+    saveExecutionTime(algorytm, sortowanie, printPosortowanie, startTime)
 
 
 
 print("SELECTION SORT")
 # selection sort (losowe dane)
 for a in randomlisty:
-    startTime = datetime.now()
-    for i in range(len(a)):
-        min = i
-        for n in range(i+1, len(a)):
-            if a[min] > a[n]:
-                min = n
-        a[i], a[min] = a[min], a[i]
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Selection sort', len(a), 'Posortowane losowo', time])
-        f_object.close()
-    print("Losowe", len(a) , time)
+    selection('Selection sort', 'Posortowane losowo', 'Losowe')
 print("")
 
 # selection sort (posortowane rosnąco dane)
 for a in ascendinglisty:
-    startTime = datetime.now()
-    for i in range(len(a)):
-        min = i
-        for n in range(i+1, len(a)):
-            if a[min] > a[n]:
-                min = n
-        a[i], a[min] = a[min], a[i]
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Selection sort', len(a), 'Posortowane rosnąco', time])
-        f_object.close()
-    print("Rosnace", len(a) , time)
+   selection('Selection sort', 'Posortowane rosnąco', 'Rosnace')
 print("")
 
 # selection sort (posortowane malejąco dane)
 for a in descendinglisty:
-    startTime = datetime.now()
-    for i in range(len(a)):
-        min = i
-        for n in range(i+1, len(a)):
-            if a[min] > a[n]:
-                min = n
-        a[i], a[min] = a[min], a[i]
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Selection sort', len(a), 'Posortowane malejąco', time])
-        f_object.close()
-    print("Malejace", len(a) , time)
+    selection('Selection sort', 'Posortowane malejąco', 'Malejace')
 print("")
 
 # selection sort (V-kształtne dane)
 for a in vlisty:
-    startTime = datetime.now()
-    for i in range(len(a)):
-        min = i
-        for n in range(i+1, len(a)):
-            if a[min] > a[n]:
-                min = n
-        a[i], a[min] = a[min], a[i]
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Selection sort', len(a), 'V-kształtne', time])
-        f_object.close()
-    print("V-kształtne", len(a) , time)
+   selection('Selection sort', 'V-kształtne', 'V-ksztaltne')
 print("")
 
 # selection sort (A-kształtne)
 for a in alisty:
-    startTime = datetime.now()
-    for i in range(len(a)):
-        min = i
-        for n in range(i+1, len(a)):
-            if a[min] > a[n]:
-                min = n
-        a[i], a[min] = a[min], a[i]
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Selection sort', len(a), 'A-kształtne', time])
-        f_object.close()
-    print("A-kształtne", len(a) , time)
+    selection('Selection sort', 'A-kształtne', 'A-ksztaltne')
 print("")
 
 # selection sort (dane stałe)
 for a in constlisty:
-    startTime = datetime.now()
-    for i in range(len(a)):
-        min = i
-        for n in range(i+1, len(a)):
-            if a[min] > a[n]:
-                min = n
-        a[i], a[min] = a[min], a[i]
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Selection sort', len(a), 'Stałe', time])
-        f_object.close()
-    print("Stale", len(a) , time)
+    selection('Selection sort', 'Stałe', 'Stale')
 print("")
 
 
 
 
+
+
+
+# INSERTION SORT
+def insertion(algorytm, sortowanie, printPosortowanie):
+    startTime = datetime.now()
+    for i in range(1, len(a)):
+        
+        key = a[i]
+
+        x = i-1
+        while x >= 0 and key < a[x] :
+                a[x+1] = a[x]
+                x -= 1
+        a[x+1] = key
+
+    saveExecutionTime(algorytm, sortowanie, printPosortowanie, startTime)
 
 
 
 print("INSERTION SORT")
 
-random2000.clear()
-random4000.clear()
-random6000.clear()
-random8000.clear()
-random10000.clear()
-random12000.clear()
-random14000.clear()
-random16000.clear()
-random18000.clear()
-random20000.clear()
-
-ascending2000.clear()
-ascending4000.clear()
-ascending6000.clear()
-ascending8000.clear()
-ascending10000.clear()
-ascending12000.clear()
-ascending14000.clear()
-ascending16000.clear()
-ascending18000.clear()
-ascending20000.clear()
-
-descending2000.clear()
-descending4000.clear()
-descending6000.clear()
-descending8000.clear()
-descending10000.clear()
-descending12000.clear()
-descending14000.clear()
-descending16000.clear()
-descending18000.clear()
-descending20000.clear()
-
-v2000.clear()
-v4000.clear()
-v6000.clear()
-v8000.clear()
-v10000.clear()
-v12000.clear()
-v14000.clear()
-v16000.clear()
-v18000.clear()
-v20000.clear()
-
-a2000.clear()
-a4000.clear()
-a6000.clear()
-a8000.clear()
-a10000.clear()
-a12000.clear()
-a14000.clear()
-a16000.clear()
-a18000.clear()
-a20000.clear()
-
-const2000.clear()
-const4000.clear()
-const6000.clear()
-const8000.clear()
-const10000.clear()
-const12000.clear()
-const14000.clear()
-const16000.clear()
-const18000.clear()
-const20000.clear()
-
-generaterandom()
-generateascending()
-generatedescending()
-generatev()
-generatea()
-generateconst()
+clear()
 
 # insertion sort (losowe dane)
 for a in randomlisty:
-    startTime = datetime.now()
-    for i in range(1, len(a)):
-        
-        key = a[i]
-
-        x = i-1
-        while x >= 0 and key < a[x] :
-                a[x+1] = a[x]
-                x -= 1
-        a[x+1] = key
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Insertion sort', len(a), 'Posortowane losowo', time])
-        f_object.close()
-    print("Losowe", len(a) , time)
+    insertion('insertion sort', 'Posortowane losowo', 'Losowe')
 print("")
 
 # insertion sort (posortowane rosnąco dane)
 for a in ascendinglisty:
-    startTime = datetime.now()
-    for i in range(1, len(a)):
-        
-        key = a[i]
-
-        x = i-1
-        while x >= 0 and key < a[x] :
-                a[x+1] = a[x]
-                x -= 1
-        a[x+1] = key
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Insertion sort', len(a), 'Posortowane rosnąco', time])
-        f_object.close()
-    print("Rosnace", len(a) , time)
+   insertion('insertion sort', 'Posortowane rosnąco', 'Rosnace')
 print("")
 
-# insertion sort (posortowane malejaco dane)
+# insertion sort (posortowane malejąco dane)
 for a in descendinglisty:
-    startTime = datetime.now()
-    for i in range(1, len(a)):
-        
-        key = a[i]
-
-        x = i-1
-        while x >= 0 and key < a[x] :
-                a[x+1] = a[x]
-                x -= 1
-        a[x+1] = key
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Insertion sort', len(a), 'Posortowane malejąco', time])
-        f_object.close()
-    print("Malejace", len(a) , time)
+    insertion('insertion sort', 'Posortowane malejąco', 'Malejace')
 print("")
 
-# insertion sort (V-kształtne)
+# insertion sort (V-kształtne dane)
 for a in vlisty:
-    startTime = datetime.now()
-    for i in range(1, len(a)):
-        
-        key = a[i]
-
-        x = i-1
-        while x >= 0 and key < a[x] :
-                a[x+1] = a[x]
-                x -= 1
-        a[x+1] = key
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Insertion sort', len(a), 'V-kształtne', time])
-        f_object.close()
-    print("V-ksztaltne", len(a) , time)
+   insertion('insertion sort', 'V-kształtne', 'V-ksztaltne')
 print("")
 
 # insertion sort (A-kształtne)
 for a in alisty:
-    startTime = datetime.now()
-    for i in range(1, len(a)):
-        
-        key = a[i]
-
-        x = i-1
-        while x >= 0 and key < a[x] :
-                a[x+1] = a[x]
-                x -= 1
-        a[x+1] = key
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Insertion sort', len(a), 'A-kształtne', time])
-        f_object.close()
-    print("A-ksztaltne", len(a) , time)
+    insertion('insertion sort', 'A-kształtne', 'A-ksztaltne')
 print("")
 
 # insertion sort (dane stałe)
 for a in constlisty:
-    startTime = datetime.now()
-    for i in range(1, len(a)):
-        
-        key = a[i]
-
-        x = i-1
-        while x >= 0 and key < a[x] :
-                a[x+1] = a[x]
-                x -= 1
-        a[x+1] = key
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['Insertion sort', len(a), 'Stałe', time])
-        f_object.close()
-    print("Stale", len(a) , time)
+    insertion('insertion sort', 'Stałe', 'Stale')
 print("")
 
 
 
+print("Merge Sort")
+
+clear()
+
+def mergeSort(arr):
+    if len(arr) > 1:
+ 
+        mid = len(arr)//2
+ 
+        L = arr[:mid]
+ 
+        R = arr[mid:]
+ 
+        mergeSort(L)
+
+        mergeSort(R)
+ 
+        i = j = k = 0
+ 
+        while i < len(L) and j < len(R):
+            if L[i] < R[j]:
+                arr[k] = L[i]
+                i += 1
+            else:
+                arr[k] = R[j]
+                j += 1
+            k += 1
+ 
+        while i < len(L):
+            arr[k] = L[i]
+            i += 1
+            k += 1
+ 
+        while j < len(R):
+            arr[k] = R[j]
+            j += 1
+            k += 1
 
 
 
 
 
-
-print("QuickSort")
-
-random2000.clear()
-random4000.clear()
-random6000.clear()
-random8000.clear()
-random10000.clear()
-random12000.clear()
-random14000.clear()
-random16000.clear()
-random18000.clear()
-random20000.clear()
-
-ascending2000.clear()
-ascending4000.clear()
-ascending6000.clear()
-ascending8000.clear()
-ascending10000.clear()
-ascending12000.clear()
-ascending14000.clear()
-ascending16000.clear()
-ascending18000.clear()
-ascending20000.clear()
-
-descending2000.clear()
-descending4000.clear()
-descending6000.clear()
-descending8000.clear()
-descending10000.clear()
-descending12000.clear()
-descending14000.clear()
-descending16000.clear()
-descending18000.clear()
-descending20000.clear()
-
-v2000.clear()
-v4000.clear()
-v6000.clear()
-v8000.clear()
-v10000.clear()
-v12000.clear()
-v14000.clear()
-v16000.clear()
-v18000.clear()
-v20000.clear()
-
-a2000.clear()
-a4000.clear()
-a6000.clear()
-a8000.clear()
-a10000.clear()
-a12000.clear()
-a14000.clear()
-a16000.clear()
-a18000.clear()
-a20000.clear()
-
-const2000.clear()
-const4000.clear()
-const6000.clear()
-const8000.clear()
-const10000.clear()
-const12000.clear()
-const14000.clear()
-const16000.clear()
-const18000.clear()
-const20000.clear()
-
-generaterandom()
-generateascending()
-generatedescending()
-generatev()
-generatea()
-generateconst()
-
-def partition(array, start, end):
-    pivot = array[(start + end)//2]
-    low = start + 1
-    high = end
-
-    while True:
-        while low <= high and array[high] >= pivot:
-            high = high - 1
-
-        while low <= high and array[low] <= pivot:
-            low = low + 1
-
-        if low <= high:
-            array[low], array[high] = array[high], array[low]
-        else:
-            break
-
-    array[start], array[high] = array[high], array[start]
-
-    return high
-  
-def quick_sort(array, start, end):
-    if start >= end:
-        return
-
-    p = partition(array, start, end)
-    quick_sort(array, start, p-1)
-    quick_sort(array, p+1, end)
-
-
-# QuickSort (losowe dane)
+# Merge Sort (losowe dane)
 for a in randomlisty:
     startTime = datetime.now()
-    n = len(a)
-    quick_sort(a, 0, n-1)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['QuickSort', len(a), 'Posortowane losowo', time])
-        f_object.close()
-    print("Losowe", len(a) , time)
+    mergeSort(a)
+    saveExecutionTime('Merge Sort', 'Posortowane losowo', 'Losowe', startTime)
 print("")
 
 
-# QuickSort (posortowane rosnąco dane)
+# Merge Sort (posortowane rosnąco dane)
 for a in ascendinglisty:
     startTime = datetime.now()
-    n = len(a)
-    quick_sort(a, 0, n-1)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['QuickSort', len(a), 'Posortowane rosnąco', time])
-        f_object.close()
-    print("Rosnace", len(a) , time)
+    mergeSort(a)
+    saveExecutionTime('Merge Sort', 'Posortowane rosnąco', 'Rosnace', startTime)
 print("")
 
-# QuickSort (posortowane malejaco dane)
+
+# Merge Sort (posortowane malejaco dane)
 for a in descendinglisty:
     startTime = datetime.now()
-    n = len(a)
-    quick_sort(a, 0, n-1)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['QuickSort', len(a), 'Posortowane malejąco', time])
-        f_object.close()
-    print("Malejace", len(a) , time)
+    mergeSort(a)
+    saveExecutionTime('Merge Sort', 'Posortowane malejąco', 'Malejace', startTime)
 print("")
 
-# QuickSort (V-kształtne)
+
+# Merge Sort (V-kształtne)
 for a in vlisty:
     startTime = datetime.now()
-    n = len(a)
-    quick_sort(a, 0, n-1)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['QuickSort', len(a), 'V-kształtne', time])
-        f_object.close()
-    print("V-ksztaltne", len(a) , time)
+    mergeSort(a)
+    saveExecutionTime('Merge Sort', 'V-kształtne', 'V-ksztaltne', startTime)
 print("")
 
-# QuickSort (A-kształtne)
+
+# Merge Sort (A-kształtne)
 for a in alisty:
     startTime = datetime.now()
-    n = len(a)
-    quick_sort(a, 0, n-1)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['QuickSort', len(a), 'A-kształtne', time])
-        f_object.close()
-    print("A-ksztaltne", len(a) , time)
+    mergeSort(a)
+    saveExecutionTime('Merge Sort', 'A-kształtne', 'A-ksztaltne', startTime)
 print("")
 
-# QuickSort (dane stałe)
+
+# Merge Sort (dane stałe)
 for a in constlisty:
     startTime = datetime.now()
-    n = len(a)
-    quick_sort(a, 0, n-1)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['QuickSort', len(a), 'Stałe', time])
-        f_object.close()
-    print("Stale", len(a) , time)
+    mergeSort(a)
+    saveExecutionTime('Merge Sort', 'Stałe', 'Stale', startTime)
 print("")
-
-
 
 
 
@@ -684,79 +443,7 @@ print("")
 
 print("HeapSort")
 
-random2000.clear()
-random4000.clear()
-random6000.clear()
-random8000.clear()
-random10000.clear()
-random12000.clear()
-random14000.clear()
-random16000.clear()
-random18000.clear()
-random20000.clear()
-
-ascending2000.clear()
-ascending4000.clear()
-ascending6000.clear()
-ascending8000.clear()
-ascending10000.clear()
-ascending12000.clear()
-ascending14000.clear()
-ascending16000.clear()
-ascending18000.clear()
-ascending20000.clear()
-
-descending2000.clear()
-descending4000.clear()
-descending6000.clear()
-descending8000.clear()
-descending10000.clear()
-descending12000.clear()
-descending14000.clear()
-descending16000.clear()
-descending18000.clear()
-descending20000.clear()
-
-v2000.clear()
-v4000.clear()
-v6000.clear()
-v8000.clear()
-v10000.clear()
-v12000.clear()
-v14000.clear()
-v16000.clear()
-v18000.clear()
-v20000.clear()
-
-a2000.clear()
-a4000.clear()
-a6000.clear()
-a8000.clear()
-a10000.clear()
-a12000.clear()
-a14000.clear()
-a16000.clear()
-a18000.clear()
-a20000.clear()
-
-const2000.clear()
-const4000.clear()
-const6000.clear()
-const8000.clear()
-const10000.clear()
-const12000.clear()
-const14000.clear()
-const16000.clear()
-const18000.clear()
-const20000.clear()
-
-generaterandom()
-generateascending()
-generatedescending()
-generatev()
-generatea()
-generateconst()
-
+clear()
 
 def heapify(arr, n, i):
     largest = i
@@ -791,82 +478,43 @@ def heapSort(arr):
 for a in randomlisty:
     startTime = datetime.now()
     heapSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['HeapSort', len(a), 'Posortowane losowo', time])
-        f_object.close()
-    print("Losowe", len(a) , time)
+    saveExecutionTime('Heap Sort', 'Posortowane losowo', 'Losowe', startTime)
 print("")
 
 # HeapSort (posortowane rosnąco dane)
 for a in ascendinglisty:
     startTime = datetime.now()
     heapSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['HeapSort', len(a), 'Posortowane rosnąco', time])
-        f_object.close()
-    print("Rosnące", len(a) , time)
+    saveExecutionTime('Heap Sort', 'Posortowane rosnąco', 'Rosnace', startTime)
 print("")
 
 # HeapSort (posortowane malejaco dane)
 for a in descendinglisty:
     startTime = datetime.now()
     heapSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['HeapSort', len(a), 'Posortowane malejąco', time])
-        f_object.close()
-    print("Malejace", len(a) , time)
+    saveExecutionTime('Heap Sort', 'Posortowane malejąco', 'Malejace', startTime)
 print("")
 
 # HeapSort (V-kształtne)
 for a in vlisty:
     startTime = datetime.now()
     heapSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['HeapSort', len(a), 'V-kształtne', time])
-        f_object.close()
-    print("V-ksztaltne", len(a) , time)
+    saveExecutionTime('Heap Sort', 'V-kształtne', 'V-ksztaltne', startTime)
 print("")
 
 # HeapSort (A-kształtne)
 for a in alisty:
     startTime = datetime.now()
     heapSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['HeapSort', len(a), 'A-kształtne', time])
-        f_object.close()
-    print("A-ksztaltne", len(a) , time)
+    saveExecutionTime('Heap Sort', 'A-kształtne', 'A-ksztaltne', startTime)
 print("")
 
 # HeapSort (dane stałe)
 for a in constlisty:
     startTime = datetime.now()
     heapSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['HeapSort', len(a), 'Stałe', time])
-        f_object.close()
-    print("Stale", len(a) , time)
+    saveExecutionTime('Heap Sort', 'Stałe', 'Stale', startTime)
 print("")
-
-
-
 
 
 
@@ -875,79 +523,7 @@ print("")
 
 print("ShellSort")
 
-random2000.clear()
-random4000.clear()
-random6000.clear()
-random8000.clear()
-random10000.clear()
-random12000.clear()
-random14000.clear()
-random16000.clear()
-random18000.clear()
-random20000.clear()
-
-ascending2000.clear()
-ascending4000.clear()
-ascending6000.clear()
-ascending8000.clear()
-ascending10000.clear()
-ascending12000.clear()
-ascending14000.clear()
-ascending16000.clear()
-ascending18000.clear()
-ascending20000.clear()
-
-descending2000.clear()
-descending4000.clear()
-descending6000.clear()
-descending8000.clear()
-descending10000.clear()
-descending12000.clear()
-descending14000.clear()
-descending16000.clear()
-descending18000.clear()
-descending20000.clear()
-
-v2000.clear()
-v4000.clear()
-v6000.clear()
-v8000.clear()
-v10000.clear()
-v12000.clear()
-v14000.clear()
-v16000.clear()
-v18000.clear()
-v20000.clear()
-
-a2000.clear()
-a4000.clear()
-a6000.clear()
-a8000.clear()
-a10000.clear()
-a12000.clear()
-a14000.clear()
-a16000.clear()
-a18000.clear()
-a20000.clear()
-
-const2000.clear()
-const4000.clear()
-const6000.clear()
-const8000.clear()
-const10000.clear()
-const12000.clear()
-const14000.clear()
-const16000.clear()
-const18000.clear()
-const20000.clear()
-
-generaterandom()
-generateascending()
-generatedescending()
-generatev()
-generatea()
-generateconst()
-
+clear()
 
 def shellSort(arr):
 
@@ -974,78 +550,44 @@ def shellSort(arr):
 for a in randomlisty:
     startTime = datetime.now()
     shellSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['ShellSort', len(a), 'Posortowane losowo', time])
-        f_object.close()
-    print("Losowe", len(a) , time)
+    saveExecutionTime('Shell Sort', 'Posortowane losowo', 'Losowe', startTime)
 print("")
 
 # ShellSort (posortowane rosnąco dane)
 for a in ascendinglisty:
     startTime = datetime.now()
     shellSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['ShellSort', len(a), 'Posortowane rosnąco', time])
-        f_object.close()
-    print("Rosnace", len(a) , time)
+    saveExecutionTime('Shell Sort', 'Posortowane rosnąco', 'Rosnace', startTime)
 print("")
 
 # ShellSort (posortowane malejaco dane)
 for a in descendinglisty:
     startTime = datetime.now()
     shellSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['ShellSort', len(a), 'Posortowane losowo', time])
-        f_object.close()
-    print("Losowe", len(a) , time)
+    saveExecutionTime('Shell Sort', 'Posortowane malejąco', 'Malejace', startTime)
 print("")
 
 # ShellSort (V-kształtne)
 for a in vlisty:
     startTime = datetime.now()
     shellSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['ShellSort', len(a), 'V-kształtne', time])
-        f_object.close()
-    print("V-ksztaltne", len(a) , time)
+    saveExecutionTime('Shell Sort', 'V-kształtne', 'V-ksztaltne', startTime)
 print("")
 
 # ShellSort (A-kształtne)
 for a in alisty:
     startTime = datetime.now()
     shellSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['ShellSort', len(a), 'A-kształtne', time])
-        f_object.close()
-    print("A-ksztaltne", len(a) , time)
+    saveExecutionTime('Shell Sort', 'A-kształtne', 'A-ksztaltne', startTime)
 print("")
 
 # ShellSort (dane stałe)
 for a in constlisty:
     startTime = datetime.now()
     shellSort(a)
-
-    time =  datetime.now() - startTime
-    with open('wynik.csv', 'a', newline='') as f_object:
-        writer_object = writer(f_object)
-        writer_object.writerow(['ShellSort', len(a), 'Stałe', time])
-        f_object.close()
-    print("Stale", len(a) , time)
+    saveExecutionTime('Shell Sort', 'Stałe', 'Stale', startTime)
 print("")
 
+
+# wypisuje jak długo wykonywał się program
 print("Calosc zajela: ", datetime.now() - startTimeFull)
